@@ -1,30 +1,37 @@
 package com.testing.endava.steps;
 
-import com.testing.endava.pages.LoginPage;
+import com.testing.endava.pages.RegisterPage;
 import com.testing.endava.pojo.User;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LoginSteps {
 
     User user = User.builder()
-            .username("Andrei")
-            .password("Parola")
+            .firstName("Andrei")
+            .lastName("Pop")
             .build();
     @Autowired
-    private LoginPage loginPage;
+    private RegisterPage registerPage;
 
-    @Given("I have navigated to login page")
-    public void iHaveNavigatedToLoginPage() {
-        loginPage.validateHomePage();
+    @Given("I have navigated to register page")
+    public void iHaveNavigatedToRegisterPage() {
+        registerPage.validateRegisterPage();
     }
 
-    @And("I login with username and password")
-    public void iLoginWithUserNameAndPassword() {
-        loginPage.loginIn(user)
-                .clickLogin();
+    @When("I enter first and last name to Full Name box")
+    public void iRegisterWithFirstNameAndLastName() {
+        registerPage.acceptConsent();
+        registerPage.registerUser(user);
+    }
 
+    @Then("I refresh the page and navigate to Home Page")
+    public void iRefreshThePage() throws InterruptedException {
+        registerPage.clickRefresh();
+        registerPage.goToHomePage();
+        Thread.sleep(3000);
     }
 
 
